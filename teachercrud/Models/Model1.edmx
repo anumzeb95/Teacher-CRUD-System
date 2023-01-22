@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="Model1.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
+        <EntityContainer Name="Model1TargetContainer" >
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model1" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="Model1Container" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="courses" EntityType="Model1.course" />
+          <EntitySet Name="contents" EntityType="Model1.content" />
+          <EntitySet Name="content_rating" EntityType="Model1.content_rating" />
+          <EntitySet Name="authors" EntityType="Model1.author" />
+          <EntitySet Name="people" EntityType="Model1.person" />
+          <EntitySet Name="content_comment" EntityType="Model1.content_comment" />
+          <EntitySet Name="course_comment" EntityType="Model1.course_comment" />
+          <AssociationSet Name="coursecontent" Association="Model1.coursecontent">
+            <End Role="course" EntitySet="courses" />
+            <End Role="content" EntitySet="contents" />
+          </AssociationSet>
+          <AssociationSet Name="coursecourse_comment" Association="Model1.coursecourse_comment">
+            <End Role="course" EntitySet="courses" />
+            <End Role="course_comment" EntitySet="course_comment" />
+          </AssociationSet>
+          <AssociationSet Name="courseauthor" Association="Model1.courseauthor">
+            <End Role="course" EntitySet="courses" />
+            <End Role="author" EntitySet="authors" />
+          </AssociationSet>
+          <AssociationSet Name="courseperson" Association="Model1.courseperson">
+            <End Role="course" EntitySet="courses" />
+            <End Role="person" EntitySet="people" />
+          </AssociationSet>
+          <AssociationSet Name="contentcontent_rating" Association="Model1.contentcontent_rating">
+            <End Role="content" EntitySet="contents" />
+            <End Role="content_rating" EntitySet="content_rating" />
+          </AssociationSet>
+          <AssociationSet Name="content_ratingperson" Association="Model1.content_ratingperson">
+            <End Role="content_rating" EntitySet="content_rating" />
+            <End Role="person" EntitySet="people" />
+          </AssociationSet>
+          <AssociationSet Name="contentcontent_comment" Association="Model1.contentcontent_comment">
+            <End Role="content" EntitySet="contents" />
+            <End Role="content_comment" EntitySet="content_comment" />
+          </AssociationSet>
+          <AssociationSet Name="personcontent_comment" Association="Model1.personcontent_comment">
+            <End Role="person" EntitySet="people" />
+            <End Role="content_comment" EntitySet="content_comment" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="course">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="created_name" Type="String" Nullable="false" />
+          <NavigationProperty Name="contents" Relationship="Model1.coursecontent" FromRole="course" ToRole="content" />
+          <NavigationProperty Name="course_comment" Relationship="Model1.coursecourse_comment" FromRole="course" ToRole="course_comment" />
+          <NavigationProperty Name="authors" Relationship="Model1.courseauthor" FromRole="course" ToRole="author" />
+          <NavigationProperty Name="people" Relationship="Model1.courseperson" FromRole="course" ToRole="person" />
+        </EntityType>
+        <EntityType Name="content">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <Property Name="created_date" Type="String" Nullable="false" />
+          <Property Name="introduction" Type="String" Nullable="false" />
+          <Property Name="description" Type="String" Nullable="false" />
+          <Property Name="summary" Type="String" Nullable="false" />
+          <Property Name="course_id" Type="String" Nullable="false" />
+          <Property Name="courseId" Type="Int32" Nullable="true" />
+          <NavigationProperty Name="course" Relationship="Model1.coursecontent" FromRole="content" ToRole="course" />
+          <NavigationProperty Name="content_rating" Relationship="Model1.contentcontent_rating" FromRole="content" ToRole="content_rating" />
+          <NavigationProperty Name="content_comment" Relationship="Model1.contentcontent_comment" FromRole="content" ToRole="content_comment" />
+        </EntityType>
+        <EntityType Name="content_rating">
+          <Key>
+            <PropertyRef Name="Person_id" />
+            <PropertyRef Name="Content_id" />
+          </Key>
+          <Property Name="Person_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Content_id" Type="String" Nullable="false" />
+          <Property Name="rating" Type="String" Nullable="false" />
+          <Property Name="contentId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="content" Relationship="Model1.contentcontent_rating" FromRole="content_rating" ToRole="content" />
+          <NavigationProperty Name="person" Relationship="Model1.content_ratingperson" FromRole="content_rating" ToRole="person" />
+        </EntityType>
+        <EntityType Name="author">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" Nullable="false" />
+          <NavigationProperty Name="courses" Relationship="Model1.courseauthor" FromRole="author" ToRole="course" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="first_name" Type="String" Nullable="false" />
+          <Property Name="last_name" Type="String" Nullable="false" />
+          <Property Name="current_logging" Type="String" Nullable="false" />
+          <Property Name="password" Type="String" Nullable="false" />
+          <Property Name="trials" Type="String" Nullable="false" />
+          <NavigationProperty Name="courses" Relationship="Model1.courseperson" FromRole="person" ToRole="course" />
+          <NavigationProperty Name="content_rating" Relationship="Model1.content_ratingperson" FromRole="person" ToRole="content_rating" />
+          <NavigationProperty Name="content_comment" Relationship="Model1.personcontent_comment" FromRole="person" ToRole="content_comment" />
+        </EntityType>
+        <EntityType Name="content_comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="content_id" Type="String" Nullable="false" />
+          <Property Name="comment" Type="String" Nullable="false" />
+          <Property Name="commented_date" Type="String" Nullable="false" />
+          <Property Name="person_id" Type="String" Nullable="false" />
+          <Property Name="contentId" Type="Int32" Nullable="false" />
+          <Property Name="personId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="content" Relationship="Model1.contentcontent_comment" FromRole="content_comment" ToRole="content" />
+          <NavigationProperty Name="person" Relationship="Model1.personcontent_comment" FromRole="content_comment" ToRole="person" />
+        </EntityType>
+        <EntityType Name="course_comment">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="course_id" Type="String" Nullable="false" />
+          <Property Name="comment" Type="String" Nullable="false" />
+          <Property Name="commented_date" Type="String" Nullable="false" />
+          <Property Name="person_id" Type="String" Nullable="false" />
+          <Property Name="courseId" Type="Int32" Nullable="false" />
+          <Property Name="personId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="course" Relationship="Model1.coursecourse_comment" FromRole="course_comment" ToRole="course" />
+        </EntityType>
+        <Association Name="coursecontent">
+          <End Type="Model1.course" Role="course" Multiplicity="0..1" />
+          <End Type="Model1.content" Role="content" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="content">
+              <PropertyRef Name="courseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="coursecourse_comment">
+          <End Type="Model1.course" Role="course" Multiplicity="1" />
+          <End Type="Model1.course_comment" Role="course_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="course">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="course_comment">
+              <PropertyRef Name="courseId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="courseauthor">
+          <End Type="Model1.course" Role="course" Multiplicity="*" />
+          <End Type="Model1.author" Role="author" Multiplicity="*" />
+        </Association>
+        <Association Name="courseperson">
+          <End Type="Model1.course" Role="course" Multiplicity="*" />
+          <End Type="Model1.person" Role="person" Multiplicity="*" />
+        </Association>
+        <Association Name="contentcontent_rating">
+          <End Type="Model1.content" Role="content" Multiplicity="1" />
+          <End Type="Model1.content_rating" Role="content_rating" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="content">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="content_rating">
+              <PropertyRef Name="contentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="content_ratingperson">
+          <End Type="Model1.content_rating" Role="content_rating" Multiplicity="*" />
+          <End Type="Model1.person" Role="person" Multiplicity="1" />
+        </Association>
+        <Association Name="contentcontent_comment">
+          <End Type="Model1.content" Role="content" Multiplicity="1" />
+          <End Type="Model1.content_comment" Role="content_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="content">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="content_comment">
+              <PropertyRef Name="contentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="personcontent_comment">
+          <End Type="Model1.person" Role="person" Multiplicity="1" />
+          <End Type="Model1.content_comment" Role="content_comment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="content_comment">
+              <PropertyRef Name="personId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
+        <Alias Key="Model" Value="Model1" />
+        <Alias Key="Target" Value="Model1.Store" />
+        <EntityContainerMapping CdmEntityContainer="Model1Container" StorageEntityContainer="Model1TargetContainer">
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
